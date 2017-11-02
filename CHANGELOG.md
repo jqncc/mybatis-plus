@@ -1,6 +1,160 @@
-# CHANGELOG
+﻿# CHANGELOG
 
-## [v2.0.6] 2017.04.20
+
+## [v2.1.3] 2017.10.15
+- 新增通用枚举处理器，参考 spring boot demno
+- 优化 SQL 解析器
+- 新增 schema 租户解析器待完善
+- 其他优化
+
+
+## [v2.1.2] 2017.09.17
+- 修复代码生成器 Bug
+- fixed gitee issues/IF2DY
+- 修改 page 可链式操作
+- 去掉转义 oracle
+- fixed github issues/119
+- fixed gitee issues/IF2OI
+
+
+## [v2.1.1] 2017.09.12
+- 修改分页超过总记录数自动设置第一页 bug @wujing 感谢 pr
+- fixed IEID6
+- 升级 mybatis 3.4.5
+- 升级生成器模板引擎 veloctiy 2.0
+- 升级 jsqlparser 1.1
+- 新增 SQL 解析链可动态扩展自定义 SQL 解析
+- 新增 多租户 SQL 解析逻辑，具体查看 spring boot 演示 demo
+- jasonlong10 PR 性能分析拦截器 支持OraclePreparedStatementWrapper的情况打印 SQL
+- fixed github issues/145
+- fixed gitee issue/IF1OF
+- add sqlSelect("distinct test_type") test case
+- 添加填充生成器遗漏 TableField 导入类
+- fixed github issues/MYSQL表名含有保留字代码生成时报错 #124:字段全为 大写 下划线命名支持
+- fixed github issues/134
+- PostgreSQL 代码生成支持指定 schema 表字段按照默认排序
+- 其他优化调整
+
+
+## [v2.1.0] 2017.08.01
+
+####主体功能
+- 批量sqlSession没有关闭问题修复
+- 处理sql格式化报错问题,添加填充信息
+- #91:关于insertBatch在大数据量的时候优化 github
+- 新增 uuid 主键测试用例
+- 修复BUG自动填充会覆盖之前的值
+- 升级pom依赖，spring-test作用域test
+- 更改sqlServer驱动,去掉乐观锁不需要的string类型测试
+- #86:关于plus的底层映射设计问题 github issue
+- SqlHelper处理Wrapper为空,但是page.getCondition()不为空的情况
+- Merge pull request !33:生成实体增加字段排序 from 老千/master
+- 解决使用代理对象导致无法获取实例缓存信息
+- 解决布尔类型is开头生成sql错误问题
+- DBType设置错误
+- fix #351:DB2Dialect返回NULL
+- fix #356:自动代码生成的Boolean类型的get方法不对
+- fix #353:代码生成@TableLogic问题
+- 新增 PostgreSqlInjector 自动注入器，处理字段大小写敏感，自动双引号转义。
+- 仓库地址与用户信息使用自定义传入.
+- fix #357:代码生成@TableLogic引入包Bug
+- Sequence 新增 mac 判断，分页 pageHelper 模式新增 freeTotal() 方法
+- #95:分页插件俩个建议 Github, selectItems contains #{} ${},
+- 添加 Wrapper#setSqlSelect(String... columns) 方法,方便通过自动生成的实体...
+- fixed github 116 issue
+- fixed osgit IE436  IDVPZ  IDTZH
+
+####代码生成
+- 修改实体生成模板
+- 修复自动填充代码生成错误
+- 新增 postgresql schemaname 生成器支持
+- 调整序列化导入问题
+- 其他
+
+
+## [v2.1-gamma] 2017.06.29
+
+####主体功能
+- 修正之前sqlserver自动获取类型错误问题
+- 修复用户无法自定义分页数据库方言问题
+
+####代码生成
+- 完善了自动填充代码生成
+- 修复postgresql生成重复字段问题
+
+####上个版本（2.0.9）升级导致的问题
+- 修复实体主键不在第一位无法读取的问题
+- 修复在自定义insert操作时报`Insert not found et`异常，见#331
+- 修复Sql生成错误问题(普通注入Group,Having,Order)
+- 修复逻辑删除生成Sql顺序错误
+- 感谢各路小伙伴及时反馈的问题,上个版本给大家带来的问题深感抱歉
+
+###Mybatis-Plus-Boot-Start [1.0.4]
+
+####主体变动
+- 去除Mybatis-plus直接依赖
+- 去除SpringBoot jdbc-starter直接依赖
+
+## [v2.0.9] 2017.06.26
+###Mybaits-Plus
+####主体功能
+- 修正乐观锁和逻辑删除冲突问题
+- 处理在生成注入SQL时之前没有考虑到存在且打开下划线配置情况
+- 修复EntityWrapper继承关系问题
+- Wrapper添加条件判断
+- 性能分析插件支持记录日志提示
+- Wrapper重写了toString方式,解决之前Debug时显示为null给用户造成错觉
+- 处理Sequence非毫秒内并发偶数居多问题
+- 忽略策略优化处理更改了注解的属性
+- 注入Sql的方式优化,去除之前XML注入方式
+- 处理逻辑删除出现2个Where的问题
+- 添加其他数据库序列的实现方式,并开放出接口给用户自行扩展
+- 乐观锁优化调整
+- 优化Wrapper中Where AND OR 去除之前基于反射方式实现,提高代码运行效率
+- 处理不添加mybatis-config.xml主键无法填充问题
+- MybatisPlus添加支持gradle构建方式
+- Wrapper 添加 `and()` `or()` 方法
+- 优化GlobalConfiguration,抽离出GlobalConfigUtils减少耦合
+- 修复Sqlserver2008与SqlServer2005分页问题
+- 新增自动识别数据库,减少用户显式配置
+- 优化分页插件减少用户显示配置属性
+- 自动填充字段问题解决
+- 新增PageHelper,获取当前线程来管理分页(之前老用户最好不要使用,改方式只用户适用MybatisPageHelper用户习惯)
+- 大幅度的添加测试用例(感谢K神支持)
+- 代码的其他优化
+- 添加了JSqlparser的依赖以后不用手动去添加该Jar包
+
+####代码生成
+- 支持逻辑删除方式生成
+- 支持乐观锁方式生成
+- 修复生成器不能识别sqlServer的自增主键代码生成器不能识别SqlServer自增主键的问题
+- 支持Lombok方式生成
+- 支持构建模式方式生成
+- 添加Clob和Blob类型转换
+- 修复Oracle的Number类型字段转换错误问题
+
+###Mybatis-Plus-Boot-Start [1.0.2]
+####主体功能
+- 处理AR模式devtool替换数据源失效问题
+- 添加逻辑删除支持
+- 添加序列支持
+
+## [v2.0.8] 2017.05.15
+- Wrapper添加设置对象sqlSelect
+- 兼容无注解情况
+- 乐观锁去除默认short实现,优化绑定注册器在扫描阶段绑定. 测试改为h2环境.
+- 优化热加载,去除mapper路径配置.
+- 减少刷新Mapper配置
+- 修复tableFiled value 为空情况，开启下划线命名
+- sequence 升级提示
+- 开放表信息、预留子类重写
+- 修改Idwork测试
+- 支持 devtools
+- fixed 259 支持 xml resultMap 公共字段生成
+- fixed pulls 28 支持属性重载
+
+
+## [v2.0.6  2.0.7] 2017.04.20
 - 新增 逻辑删除
 - 新增 Oracle Sequence
 - 新增 jdk1.8 时间类型

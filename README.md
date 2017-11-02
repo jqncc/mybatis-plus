@@ -13,7 +13,7 @@
     <img alt="maven" src="https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.svg?style=flat-square">
   </a>
 
-  <a href="https://github.com/vuejs/vue">
+  <a href="https://www.apache.org/licenses/LICENSE-2.0">
     <img alt="code style" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square">
   </a>
 </p>
@@ -22,7 +22,7 @@
 
 Mybatis 增强工具包 - 只做增强不做改变，简化`CRUD`操作
 
-> 技术讨论 QQ 群 576493122【坑多 2000人】，492238239 【坑多 1000人】，121472998【已满】
+> 技术讨论 QQ 群 576493122
 
 # 优点 | Advantages
 
