@@ -46,4 +46,14 @@ public class IdWorker {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
+    /**
+     * 24位唯一id,mongodb objectid算法
+     * 
+     * @return
+     */
+    public static String getObjId() {
+        ObjectId oid = new ObjectId();
+        return oid.toString();
+    }
+
 }

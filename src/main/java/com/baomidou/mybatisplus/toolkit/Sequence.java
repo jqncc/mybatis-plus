@@ -1,17 +1,14 @@
 /**
  * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package com.baomidou.mybatisplus.toolkit;
 
@@ -24,7 +21,6 @@ import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 
 import com.baomidou.mybatisplus.exceptions.MybatisPlusException;
-import com.baomidou.mybatisplus.plugins.SqlExplainInterceptor;
 
 /**
  * <p>
@@ -37,10 +33,10 @@ import com.baomidou.mybatisplus.plugins.SqlExplainInterceptor;
  */
 public class Sequence {
 
-    private static final Log logger = LogFactory.getLog(SqlExplainInterceptor.class);
+    private static final Log logger = LogFactory.getLog(Sequence.class);
 
     /* 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动） */
-    private final long twepoch = 1288834974657L;
+    private final long twepoch = 1506739523544L;
     private final long workerIdBits = 5L;/* 机器标识位数 */
     private final long datacenterIdBits = 5L;
     private final long maxWorkerId = -1L ^ (-1L << workerIdBits);
@@ -65,12 +61,13 @@ public class Sequence {
     }
 
     /**
-     * @param workerId     工作机器ID
+     * @param workerId 工作机器ID
      * @param datacenterId 序列号
      */
     public Sequence(long workerId, long datacenterId) {
         if (workerId > maxWorkerId || workerId < 0) {
-            throw new MybatisPlusException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
+            throw new MybatisPlusException(
+                    String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
         }
         if (datacenterId > maxDatacenterId || datacenterId < 0) {
             throw new MybatisPlusException(
@@ -92,12 +89,12 @@ public class Sequence {
         if (StringUtils.isNotEmpty(name)) {
             /*
              * GET jvmPid
-			 */
+             */
             mpid.append(name.split("@")[0]);
         }
         /*
          * MAC + PID 的 hashcode 获取16个低位
-		 */
+         */
         return (mpid.toString().hashCode() & 0xffff) % (maxWorkerId + 1);
     }
 
@@ -116,7 +113,8 @@ public class Sequence {
             } else {
                 byte[] mac = network.getHardwareAddress();
                 if (null != mac) {
-                    id = ((0x000000FF & (long) mac[mac.length - 1]) | (0x0000FF00 & (((long) mac[mac.length - 2]) << 8))) >> 6;
+                    id = ((0x000000FF & (long) mac[mac.length - 1])
+                            | (0x0000FF00 & (((long) mac[mac.length - 2]) << 8))) >> 6;
                     id = id % (maxDatacenterId + 1);
                 }
             }
@@ -133,20 +131,22 @@ public class Sequence {
      */
     public synchronized long nextId() {
         long timestamp = timeGen();
-        if (timestamp < lastTimestamp) {//闰秒
+        if (timestamp < lastTimestamp) {// 闰秒
             long offset = lastTimestamp - timestamp;
             if (offset <= 5) {
                 try {
                     wait(offset << 1);
                     timestamp = timeGen();
                     if (timestamp < lastTimestamp) {
-                        throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", offset));
+                        throw new RuntimeException(String
+                                .format("Clock moved backwards.  Refusing to generate id for %d milliseconds", offset));
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             } else {
-                throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", offset));
+                throw new RuntimeException(
+                        String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", offset));
             }
         }
 
@@ -164,10 +164,10 @@ public class Sequence {
 
         lastTimestamp = timestamp;
 
-        return ((timestamp - twepoch) << timestampLeftShift)    // 时间戳部分
-                | (datacenterId << datacenterIdShift)           // 数据中心部分
-                | (workerId << workerIdShift)                   // 机器标识部分
-                | sequence;                                     // 序列号部分
+        return ((timestamp - twepoch) << timestampLeftShift) // 时间戳部分
+                | (datacenterId << datacenterIdShift) // 数据中心部分
+                | (workerId << workerIdShift) // 机器标识部分
+                | sequence; // 序列号部分
     }
 
     protected long tilNextMillis(long lastTimestamp) {
@@ -178,8 +178,8 @@ public class Sequence {
         return timestamp;
     }
 
-    protected long timeGen() {
-        return SystemClock.now();
+    long timeGen() {
+        return System.currentTimeMillis();
     }
 
 }

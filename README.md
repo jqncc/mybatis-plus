@@ -18,6 +18,11 @@
   </a>
 </p>
 
+# 个人fork版本增加内容
+
+- 加入maven pom文件
+- 增加MongoDB ObjectID生成算法替换UUID,IdType.OBJ_ID
+
 # 简介 | Intro
 
 Mybatis 增强工具包 - 只做增强不做改变，简化`CRUD`操作

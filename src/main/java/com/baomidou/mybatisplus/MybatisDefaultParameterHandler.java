@@ -1,17 +1,14 @@
 /**
  * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package com.baomidou.mybatisplus;
 
@@ -102,17 +99,18 @@ public class MybatisDefaultParameterHandler extends DefaultParameterHandler {
      * @param parameterObject 插入数据库对象
      * @return
      */
+    @SuppressWarnings("rawtypes")
     protected static Object processBatch(MappedStatement ms, Object parameterObject) {
-        //检查parameterObject
-        if (null == parameterObject) return null;
+        // 检查parameterObject
+        if (null == parameterObject)
+            return null;
         boolean isFill = false;
         // 全局配置是否配置填充器
         MetaObjectHandler metaObjectHandler = GlobalConfigUtils.getMetaObjectHandler(ms.getConfiguration());
         /* 只处理插入或更新操作 */
         if (ms.getSqlCommandType() == SqlCommandType.INSERT) {
             isFill = true;
-        } else if (ms.getSqlCommandType() == SqlCommandType.UPDATE
-                && metaObjectHandler.openUpdateFill()) {
+        } else if (ms.getSqlCommandType() == SqlCommandType.UPDATE && metaObjectHandler.openUpdateFill()) {
             isFill = true;
         }
         if (isFill) {
@@ -126,7 +124,7 @@ public class MybatisDefaultParameterHandler extends DefaultParameterHandler {
                     } else {
                         /*
                          * 非表映射类不处理
-						 */
+                         */
                         objList.add(parameter);
                     }
                 }
@@ -140,8 +138,10 @@ public class MybatisDefaultParameterHandler extends DefaultParameterHandler {
                         if (et != null) {
                             if (et instanceof Map) {
                                 Map realEtMap = (Map) et;
-                                if (realEtMap.containsKey("MP_OPTLOCK_ET_ORIGINAL")) {//refer to OptimisticLockerInterceptor.MP_OPTLOCK_ET_ORIGINAL
-                                    tableInfo = TableInfoHelper.getTableInfo(realEtMap.get("MP_OPTLOCK_ET_ORIGINAL").getClass());
+                                if (realEtMap.containsKey("MP_OPTLOCK_ET_ORIGINAL")) {// refer to
+                                                                                      // OptimisticLockerInterceptor.MP_OPTLOCK_ET_ORIGINAL
+                                    tableInfo = TableInfoHelper
+                                            .getTableInfo(realEtMap.get("MP_OPTLOCK_ET_ORIGINAL").getClass());
                                 }
                             } else {
                                 tableInfo = TableInfoHelper.getTableInfo(et.getClass());
@@ -162,14 +162,13 @@ public class MybatisDefaultParameterHandler extends DefaultParameterHandler {
      * 处理正常批量插入逻辑
      * </p>
      * <p>
-     * org.apache.ibatis.session.defaults.DefaultSqlSession$StrictMap 该类方法
-     * wrapCollection 实现 StrictMap 封装逻辑
+     * org.apache.ibatis.session.defaults.DefaultSqlSession$StrictMap 该类方法 wrapCollection 实现 StrictMap 封装逻辑
      * </p>
      *
      * @param parameter 插入数据库对象
      * @return
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes","unchecked" })
     protected static Collection<Object> getParameters(Object parameter) {
         Collection<Object> parameters = null;
         if (parameter instanceof Collection) {
@@ -193,13 +192,13 @@ public class MybatisDefaultParameterHandler extends DefaultParameterHandler {
      * </p>
      *
      * @param metaObjectHandler 元数据填充处理器
-     * @param tableInfo         数据库表反射信息
-     * @param ms                MappedStatement
-     * @param parameterObject   插入数据库对象
+     * @param tableInfo 数据库表反射信息
+     * @param ms MappedStatement
+     * @param parameterObject 插入数据库对象
      * @return Object
      */
-    protected static Object populateKeys(MetaObjectHandler metaObjectHandler, TableInfo tableInfo,
-                                         MappedStatement ms, Object parameterObject) {
+    protected static Object populateKeys(MetaObjectHandler metaObjectHandler, TableInfo tableInfo, MappedStatement ms,
+            Object parameterObject) {
         if (null == tableInfo || StringUtils.isEmpty(tableInfo.getKeyProperty()) || null == tableInfo.getIdType()) {
             /* 不处理 */
             return parameterObject;
@@ -215,6 +214,8 @@ public class MybatisDefaultParameterHandler extends DefaultParameterHandler {
                         metaObject.setValue(tableInfo.getKeyProperty(), IdWorker.getId());
                     } else if (tableInfo.getIdType() == IdType.UUID) {
                         metaObject.setValue(tableInfo.getKeyProperty(), IdWorker.get32UUID());
+                    } else if (tableInfo.getIdType() == IdType.OBJ_ID) {
+                        metaObject.setValue(tableInfo.getKeyProperty(), IdWorker.getObjId());
                     }
                 }
             }
@@ -229,13 +230,13 @@ public class MybatisDefaultParameterHandler extends DefaultParameterHandler {
         return metaObject.getOriginalObject();
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes","unchecked" })
     @Override
     public void setParameters(PreparedStatement ps) {
         // 反射获取动态参数
-        Map<String, Object> additionalParameters = null;
+        Map<String,Object> additionalParameters = null;
         try {
-            additionalParameters = (Map<String, Object>) additionalParametersField.get(boundSql);
+            additionalParameters = (Map<String,Object>) additionalParametersField.get(boundSql);
         } catch (IllegalAccessException e) {
             // ignored, Because it will never happen.
         }
@@ -247,7 +248,7 @@ public class MybatisDefaultParameterHandler extends DefaultParameterHandler {
                 if (parameterMapping.getMode() != ParameterMode.OUT) {
                     Object value;
                     String propertyName = parameterMapping.getProperty();
-                    if (boundSql.hasAdditionalParameter(propertyName)) {//issue#448 ask first for additional params
+                    if (boundSql.hasAdditionalParameter(propertyName)) {// issue#448 ask first for additional params
                         value = boundSql.getAdditionalParameter(propertyName);
                     } else if (parameterObject == null) {
                         value = null;
@@ -269,7 +270,8 @@ public class MybatisDefaultParameterHandler extends DefaultParameterHandler {
                     try {
                         typeHandler.setParameter(ps, i + 1, value, jdbcType);
                     } catch (TypeException | SQLException e) {
-                        throw new TypeException("Could not set parameters for mapping: " + parameterMapping + ". Cause: " + e, e);
+                        throw new TypeException(
+                                "Could not set parameters for mapping: " + parameterMapping + ". Cause: " + e, e);
                     }
                 }
             }
