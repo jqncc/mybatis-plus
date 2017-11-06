@@ -30,7 +30,7 @@ import com.baomidou.mybatisplus.test.plugins.optimisticLocker.mapper.LongVersion
 import com.baomidou.mybatisplus.test.plugins.optimisticLocker.mapper.TimestampVersionUserMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/plugins/optimisticLockerInterceptor.xml"})
+@ContextConfiguration(locations = { "/plugins/optimisticLockerInterceptor.xml" })
 public class OptimisticLockerInterceptorTest {
 
     @Autowired
@@ -61,41 +61,41 @@ public class OptimisticLockerInterceptorTest {
     @Test
     public void intVersionTest() {
         // 查询数据
-        IntVersionUser versionUser = intVersionUserMapper.selectById(1);
+        IntVersionUser versionUser = intVersionUserMapper.selectById(1l);
         Integer originVersion = versionUser.getVersion();
         // 更新数据
         versionUser.setName("苗神");
         intVersionUserMapper.updateById(versionUser);
-        Assert.assertTrue(intVersionUserMapper.selectById(1).getVersion() == originVersion + 1);
+        Assert.assertTrue(intVersionUserMapper.selectById(1l).getVersion() == originVersion + 1);
 
         // 重复测试一次,验证动态参数覆盖
         // 查询数据
-        IntVersionUser versionUser2 = intVersionUserMapper.selectById(2);
+        IntVersionUser versionUser2 = intVersionUserMapper.selectById(2l);
         Integer originVersion2 = versionUser2.getVersion();
         versionUser2.setAge(16);
         // 更新数据
         versionUser2.setName("苗神");
         intVersionUserMapper.updateById(versionUser2);
-        Assert.assertTrue(intVersionUserMapper.selectById(2).getVersion() == originVersion2 + 1);
+        Assert.assertTrue(intVersionUserMapper.selectById(2l).getVersion() == originVersion2 + 1);
 
         // 测试一次数据库中version为null
-        IntVersionUser versionUser3 = intVersionUserMapper.selectById(3);
+        IntVersionUser versionUser3 = intVersionUserMapper.selectById(3l);
         // 更新数据
         versionUser3.setName("苗神");
         intVersionUserMapper.updateById(versionUser3);
-        Assert.assertTrue(intVersionUserMapper.selectById(3).getVersion() == null);
+        Assert.assertTrue(intVersionUserMapper.selectById(3l).getVersion() == null);
 
     }
 
     @Test
     public void longVersionTest() {
         // 查询数据
-        LongVersionUser versionUser = longVersionUserMapper.selectById(1);
+        LongVersionUser versionUser = longVersionUserMapper.selectById(1l);
         Long originVersion = versionUser.getVersion();
         // 更新数据
         versionUser.setName("苗神");
         longVersionUserMapper.updateById(versionUser);
-        Assert.assertTrue(longVersionUserMapper.selectById(1).getVersion() == originVersion + 1);
+        Assert.assertTrue(longVersionUserMapper.selectById(1l).getVersion() == originVersion + 1);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class OptimisticLockerInterceptorTest {
         versionUser.setVersion(originVersion);
         dateVersionUserMapper.insert(versionUser);
         // 更新数据
-        DateVersionUser q = dateVersionUserMapper.selectById(15);
+        DateVersionUser q = dateVersionUserMapper.selectById(15l);
         q.setName("小锅盖");
         dateVersionUserMapper.updateById(q);
         Assert.assertTrue(dateVersionUserMapper.selectById(15L).getVersion().after(originVersion));
@@ -124,7 +124,7 @@ public class OptimisticLockerInterceptorTest {
         versionUser.setVersion(originVersion);
         timestampVersionUserMapper.insert(versionUser);
         // 更新数据
-        TimestampVersionUser q = timestampVersionUserMapper.selectById(15);
+        TimestampVersionUser q = timestampVersionUserMapper.selectById(15l);
         q.setName("小锅盖");
         timestampVersionUserMapper.updateById(q);
         Assert.assertTrue(timestampVersionUserMapper.selectById(15L).getVersion().after(originVersion));
@@ -135,6 +135,7 @@ public class OptimisticLockerInterceptorTest {
         final Random random = new Random();
         for (int i = 50; i < 150; i++) {
             new Thread(new Runnable() {
+
                 public void run() {
                     IntVersionUser intVersionUser = new IntVersionUser();
                     long id = random.nextLong();

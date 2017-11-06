@@ -1,17 +1,14 @@
 /**
  * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package com.baomidou.mybatisplus.mapper;
 
@@ -61,7 +58,7 @@ public class EntityWrapper<T> extends Wrapper<T> {
     public String getSqlSegment() {
         /*
          * 无条件
-		 */
+         */
         String sqlWhere = sql.toString();
         if (StringUtils.isEmpty(sqlWhere)) {
             return null;
@@ -69,8 +66,9 @@ public class EntityWrapper<T> extends Wrapper<T> {
 
         /*
          * 根据当前实体判断是否需要将WHERE替换成 AND 增加实体不为空但所有属性为空的情况
-		 */
-        return isWhere != null ? (isWhere ? sqlWhere : sqlWhere.replaceFirst("WHERE", AND_OR)) : sqlWhere.replaceFirst("WHERE", AND_OR);
+         */
+        return isWhere != null ? (isWhere ? sqlWhere : sqlWhere.replaceFirst("WHERE", AND_OR))
+                : sqlWhere.replaceFirst("WHERE", AND_OR);
     }
 
 }

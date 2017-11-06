@@ -158,8 +158,8 @@ public class Sequence {
                 timestamp = tilNextMillis(lastTimestamp);
             }
         } else {
-            // 不同毫秒内，序列号置为 1 - 3 随机数
-            sequence = ThreadLocalRandom.current().nextLong(1, 3);
+            // 不同毫秒内，序列号置为 1 - 9 随机数
+            sequence = ThreadLocalRandom.current().nextLong(1, 9);
         }
 
         lastTimestamp = timestamp;

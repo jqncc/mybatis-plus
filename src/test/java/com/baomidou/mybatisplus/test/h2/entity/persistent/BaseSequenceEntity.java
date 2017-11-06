@@ -29,4 +29,12 @@ public abstract class BaseSequenceEntity {
     @TableId(value = "TEST_ID", type = IdType.INPUT)
     private Long id;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }

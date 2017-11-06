@@ -36,7 +36,7 @@ import com.baomidou.mybatisplus.test.h2.service.IH2UserExtendsService;
  * @date 2017/6/26
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ServiceConfig.class})
+@ContextConfiguration(classes = { ServiceConfig.class })
 public class H2UserExtendsTest extends H2Test {
 
     @Autowired
@@ -92,7 +92,6 @@ public class H2UserExtendsTest extends H2Test {
         Assert.assertEquals("Caratacus2", userFromDB.getDesc());
         Assert.assertEquals(new BigDecimal("9.99"), userFromDB.getPrice());
     }
-
 
     @Test
     public void testDelete() {
@@ -162,7 +161,6 @@ public class H2UserExtendsTest extends H2Test {
         Assert.assertEquals(2, userDB.getVersion().intValue());
         Assert.assertEquals("999", userDB.getName());
     }
-
 
     @Test
     public void testUpdateByEntityWrapperOptLockWithoutVersionVal() {
@@ -237,9 +235,9 @@ public class H2UserExtendsTest extends H2Test {
         updateUser.setVersion(1);
         Assert.assertTrue(userService.update(updateUser, null));
         EntityWrapper<H2UserIntVersionExtendTO> ew = new EntityWrapper<>();
-        int count1 = userService.selectCount(ew);
+        long count1 = userService.selectCount(ew);
         ew.eq("name", "918").eq("version", 1);
-        int count2 = userService.selectCount(ew);
+        long count2 = userService.selectCount(ew);
         List<H2UserIntVersionExtendTO> userList = userService.selectList(new EntityWrapper<H2UserIntVersionExtendTO>());
         for (H2UserIntVersionExtendTO u : userList) {
             System.out.println(u);
@@ -252,7 +250,7 @@ public class H2UserExtendsTest extends H2Test {
     @Test
     public void testUpdateBatch() {
         List<H2UserIntVersionExtendTO> list = userService.selectList(new EntityWrapper<H2UserIntVersionExtendTO>());
-        Map<Long, Integer> userVersionMap = new HashMap<>();
+        Map<Long,Integer> userVersionMap = new HashMap<>();
         for (H2UserIntVersionExtendTO u : list) {
             userVersionMap.put(u.getId(), u.getVersion());
         }
@@ -268,8 +266,8 @@ public class H2UserExtendsTest extends H2Test {
     @Test
     public void testUpdateInLoop() {
         List<H2UserIntVersionExtendTO> list = userService.selectList(new EntityWrapper<H2UserIntVersionExtendTO>());
-        Map<Long, Integer> versionBefore = new HashMap<>();
-        Map<Long, String> nameExpect = new HashMap<>();
+        Map<Long,Integer> versionBefore = new HashMap<>();
+        Map<Long,String> nameExpect = new HashMap<>();
         for (H2UserIntVersionExtendTO h2User : list) {
             Long id = h2User.getId();
             Integer versionVal = h2User.getVersion();
@@ -291,8 +289,8 @@ public class H2UserExtendsTest extends H2Test {
     @Test
     public void testUpdateAllColumnInLoop() {
         List<H2UserIntVersionExtendTO> list = userService.selectList(new EntityWrapper<H2UserIntVersionExtendTO>());
-        Map<Long, Integer> versionBefore = new HashMap<>();
-        Map<Long, String> nameExpect = new HashMap<>();
+        Map<Long,Integer> versionBefore = new HashMap<>();
+        Map<Long,String> nameExpect = new HashMap<>();
         for (H2UserIntVersionExtendTO h2User : list) {
             Long id = h2User.getId();
             Integer versionVal = h2User.getVersion();

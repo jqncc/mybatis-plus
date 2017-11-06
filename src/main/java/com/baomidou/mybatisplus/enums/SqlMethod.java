@@ -52,7 +52,8 @@ public enum SqlMethod {
     UPDATE_BY_ID("updateById", "根据ID 选择修改数据", "<script>UPDATE %s %s WHERE %s=#{%s} %s</script>"),
     UPDATE_ALL_COLUMN_BY_ID("updateAllColumnById", "根据ID 修改全部数据", "<script>UPDATE %s %s WHERE %s=#{%s} %s</script>"),
     UPDATE("update", "根据 whereEntity 条件，更新记录", "<script>UPDATE %s %s %s</script>"),
-
+    UPDATE_COLUMNS("updateColumns","修改指定列值","<script>UPDATE %s %s %s</script>"),
+    UPDATE_COLUMN_BY_ID("updateColumnById","根据id修改单列值","<script>UPDATE %s set ${col}=#{val} WHERE %s=#{id}</script>"),
     /**
      * 逻辑删除 -> 修改
      */

@@ -29,4 +29,28 @@ public class H2Addr {
     @TableField("test_id")
     private Long testId;
 
+    public Long getAddrId() {
+        return addrId;
+    }
+
+    public void setAddrId(Long addrId) {
+        this.addrId = addrId;
+    }
+
+    public String getAddrName() {
+        return addrName;
+    }
+
+    public void setAddrName(String addrName) {
+        this.addrName = addrName;
+    }
+
+    public Long getTestId() {
+        return testId;
+    }
+
+    public void setTestId(Long testId) {
+        this.testId = testId;
+    }
+
 }

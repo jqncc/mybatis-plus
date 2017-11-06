@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.test.h2.entity.persistent.H2UserLogicDelete;
  * @author yuxiaobin
  * @date 2017/6/15
  */
-public interface IH2UserLogicDeleteService extends IService<H2UserLogicDelete> {
+public interface IH2UserLogicDeleteService extends IService<H2UserLogicDelete,Long> {
 
     public H2UserLogicDelete selectByIdMy(Long id);
 }

@@ -1,17 +1,14 @@
 /**
  * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package com.baomidou.mybatisplus.plugins;
 
@@ -37,7 +34,6 @@ import com.baomidou.mybatisplus.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.toolkit.PluginUtils;
 import com.baomidou.mybatisplus.toolkit.SqlUtils;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
-import com.baomidou.mybatisplus.toolkit.SystemClock;
 
 /**
  * <p>
@@ -47,9 +43,10 @@ import com.baomidou.mybatisplus.toolkit.SystemClock;
  * @author hubin nieqiurong TaoYu
  * @Date 2016-07-07
  */
-@Intercepts({@Signature(type = StatementHandler.class, method = "query", args = {Statement.class, ResultHandler.class}),
-        @Signature(type = StatementHandler.class, method = "update", args = {Statement.class}),
-        @Signature(type = StatementHandler.class, method = "batch", args = {Statement.class})})
+@Intercepts({
+        @Signature(type = StatementHandler.class, method = "query", args = { Statement.class,ResultHandler.class }),
+        @Signature(type = StatementHandler.class, method = "update", args = { Statement.class }),
+        @Signature(type = StatementHandler.class, method = "batch", args = { Statement.class }) })
 public class PerformanceInterceptor implements Interceptor {
 
     private static final Log logger = LogFactory.getLog(PerformanceInterceptor.class);
@@ -101,8 +98,7 @@ public class PerformanceInterceptor implements Interceptor {
                 }
             } catch (Exception ignored) {
             }
-        } else if (T4CPreparedStatement.equals(stmtClassName)
-                || OraclePreparedStatementWrapper.equals(stmtClassName)) {
+        } else if (T4CPreparedStatement.equals(stmtClassName) || OraclePreparedStatementWrapper.equals(stmtClassName)) {
             try {
                 if (oracleGetOriginalSqlMethod != null) {
                     Object stmtSql = oracleGetOriginalSqlMethod.invoke(statement);
@@ -112,8 +108,9 @@ public class PerformanceInterceptor implements Interceptor {
                 } else {
                     Class<?> clazz = Class.forName(stmtClassName);
                     oracleGetOriginalSqlMethod = getMethodRegular(clazz, "getOriginalSql");
-                    if(oracleGetOriginalSqlMethod!=null) {
-                        oracleGetOriginalSqlMethod.setAccessible(true);//OraclePreparedStatementWrapper is not a public class, need set this.
+                    if (oracleGetOriginalSqlMethod != null) {
+                        oracleGetOriginalSqlMethod.setAccessible(true);// OraclePreparedStatementWrapper is not a public
+                                                                       // class, need set this.
                         if (oracleGetOriginalSqlMethod != null) {
                             Object stmtSql = oracleGetOriginalSqlMethod.invoke(statement);
                             if (stmtSql != null && stmtSql instanceof String) {
@@ -123,7 +120,7 @@ public class PerformanceInterceptor implements Interceptor {
                     }
                 }
             } catch (Exception e) {
-                //ignore
+                // ignore
             }
         }
         if (originalSql == null) {
@@ -136,9 +133,9 @@ public class PerformanceInterceptor implements Interceptor {
         }
 
         // 计算执行 SQL 耗时
-        long start = SystemClock.now();
+        long start = System.nanoTime();
         Object result = invocation.proceed();
-        long timing = SystemClock.now() - start;
+        long timing = System.nanoTime() - start;
 
         // 格式化 SQL 打印执行结果
         Object target = PluginUtils.realTarget(invocation.getTarget());

@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.test.h2.service.IH2UserExtendsService;
  * @date 2017/6/26
  */
 @Service
-public class H2UserExtendsServiceImpl extends ServiceImpl<H2UserExtendsMapper, H2UserIntVersionExtendTO> implements IH2UserExtendsService {
+public class H2UserExtendsServiceImpl extends ServiceImpl<H2UserExtendsMapper,H2UserIntVersionExtendTO,Long>
+        implements IH2UserExtendsService {
 
 }

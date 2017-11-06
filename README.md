@@ -22,6 +22,10 @@
 
 - 加入maven pom文件
 - 增加MongoDB ObjectID生成算法替换UUID,IdType.OBJ_ID
+- Snowflake主键生成算法修改:删除SystemClock(个人意见:snowflake算法效率已经非常高,主键并非每毫秒都在生成,而SystemClock需要每毫秒都耗费资源切换线程)
+- PerformanceInterceptor性能分析SystemClock改为System.nanoTime计算时间差
+- BaseMapper增加主键泛型
+- BaseMapper增加方法 更新指定列:updateColumns,根据id更新单列值:updateColumnById.Wrapper增加"更新列"数组属性updateColumns
 
 # 简介 | Intro
 

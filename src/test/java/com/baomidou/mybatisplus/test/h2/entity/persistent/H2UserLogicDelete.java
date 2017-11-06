@@ -48,11 +48,75 @@ public class H2UserLogicDelete {
 
     private String desc;
 
-    //    @Version
+    // @Version
     @TableLogic
     private Integer version;
 
     @TableField(value = "last_updated_dt")
     private Timestamp lastUpdatedDt;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Integer getTestType() {
+        return testType;
+    }
+
+    public void setTestType(Integer testType) {
+        this.testType = testType;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Timestamp getLastUpdatedDt() {
+        return lastUpdatedDt;
+    }
+
+    public void setLastUpdatedDt(Timestamp lastUpdatedDt) {
+        this.lastUpdatedDt = lastUpdatedDt;
+    }
 
 }

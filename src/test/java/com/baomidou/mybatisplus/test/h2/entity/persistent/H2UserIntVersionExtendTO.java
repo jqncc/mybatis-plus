@@ -39,7 +39,55 @@ public class H2UserIntVersionExtendTO extends BaseIntVersionEntity {
 
     private String desc;
 
-
     @TableField("last_updated_dt")
     private Date lastUpdatedDt;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Integer getTestType() {
+        return testType;
+    }
+
+    public void setTestType(Integer testType) {
+        this.testType = testType;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public Date getLastUpdatedDt() {
+        return lastUpdatedDt;
+    }
+
+    public void setLastUpdatedDt(Date lastUpdatedDt) {
+        this.lastUpdatedDt = lastUpdatedDt;
+    }
+
 }

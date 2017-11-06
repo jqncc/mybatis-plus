@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.test.oracle.entity.TestSequser;
 /**
  * TestUser 表数据库控制层接口
  */
-public interface TestSequserMapper extends BaseMapper<TestSequser> {
+public interface TestSequserMapper extends BaseMapper<TestSequser,Long> {
 
     @Select("select * from TEST_SEQUSER")
     List<TestSequser> getList();

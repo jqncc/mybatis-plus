@@ -10,6 +10,6 @@ import com.baomidou.mybatisplus.test.oracle.entity.TestSequser;
  * @author yuxiaobin
  * @date 2017/6/14
  */
-public interface OracleUserSeqService extends IService<TestSequser> {
+public interface OracleUserSeqService extends IService<TestSequser,Long> {
 
 }

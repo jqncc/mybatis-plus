@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.test.h2.entity.persistent.H2UserIntVersionExtend
  * @author yuxiaobin
  * @date 2017/6/26
  */
-public interface IH2UserExtendsService extends IService<H2UserIntVersionExtendTO> {
+public interface IH2UserExtendsService extends IService<H2UserIntVersionExtendTO,Long> {
 
 }

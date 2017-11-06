@@ -31,7 +31,7 @@ import com.baomidou.mybatisplus.test.h2.service.IH2UserMetaobjService;
  * @date 2017/4/1
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:h2/spring-test-h2.xml"})
+@ContextConfiguration(locations = { "classpath:h2/spring-test-h2.xml" })
 public class H2UserAutoincrementTest extends H2Test {
 
     @Autowired
@@ -42,8 +42,8 @@ public class H2UserAutoincrementTest extends H2Test {
 
     @BeforeClass
     public static void initDB() throws SQLException, IOException {
-        @SuppressWarnings("resource")
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:h2/spring-test-h2.xml");
+        @SuppressWarnings("resource") ApplicationContext context = new ClassPathXmlApplicationContext(
+                "classpath:h2/spring-test-h2.xml");
         DataSource ds = (DataSource) context.getBean("dataSource");
         try (Connection conn = ds.getConnection()) {
             String createTableSql = readFile("user.ddl.sql");
@@ -60,21 +60,20 @@ public class H2UserAutoincrementTest extends H2Test {
         H2UserMetaObj user = new H2UserMetaObj();
         user.setAge(1);
         user.setPrice(new BigDecimal("9.99"));
-        Assert.assertEquals(1, userMapper.insert(user).intValue());
+        Assert.assertEquals(1, userMapper.insert(user));
         Long id1 = user.getId();
         Assert.assertNotNull(id1);
         user.setDesc("Caratacus");
-        Assert.assertEquals(1, userMapper.updateById(user).intValue());
+        Assert.assertEquals(1, userMapper.updateById(user));
         H2UserMetaObj userFromDB = userMapper.selectById(id1);
         Assert.assertEquals("Caratacus", userFromDB.getDesc());
 
         H2UserMetaObj user2 = new H2UserMetaObj();
         user2.setAge(2);
-        Assert.assertEquals(1, userMapper.insert(user2).intValue());
+        Assert.assertEquals(1, userMapper.insert(user2));
         Long userId2 = user2.getId();
         Assert.assertEquals(id1.intValue() + 1, userId2.intValue());
     }
-
 
     @Test
     public void testInsertMy() {

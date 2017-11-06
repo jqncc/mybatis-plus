@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @TableName("TEST_SEQUSER")
-//@KeySequence("SEQ_TEST")
+// @KeySequence("SEQ_TEST")
 public class TestSequser extends BaseTestEntity implements Serializable {
 
     @TableField(exist = false)
@@ -23,14 +23,13 @@ public class TestSequser extends BaseTestEntity implements Serializable {
     /**
      * 主键ID
      */
-//    @TableId(value = "TEST_ID", type = IdType.INPUT)
-//    private Long id;
+    // @TableId(value = "TEST_ID", type = IdType.INPUT)
+    // private Long id;
     /**
      * 主键ID
      */
     // @TableId(value = "ID")
     // private Long id;
-
 
     /**
      * 名称
@@ -60,12 +59,36 @@ public class TestSequser extends BaseTestEntity implements Serializable {
         this.testType = testType;
     }
 
-    //public Long getId() {
-    //	return id;
-    //}
+    public String getName() {
+        return name;
+    }
 
-    //public void setId(Long id) {
-    //	this.id = id;
-    //}
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Integer getTestType() {
+        return testType;
+    }
+
+    public void setTestType(Integer testType) {
+        this.testType = testType;
+    }
+
+    // public Long getId() {
+    // return id;
+    // }
+
+    // public void setId(Long id) {
+    // this.id = id;
+    // }
 
 }

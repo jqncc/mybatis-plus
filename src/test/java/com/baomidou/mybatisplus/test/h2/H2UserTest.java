@@ -39,7 +39,7 @@ import com.baomidou.mybatisplus.test.h2.service.IH2UserService;
  * @date 2017/4/1
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:h2/spring-test-h2.xml"})
+@ContextConfiguration(locations = { "classpath:h2/spring-test-h2.xml" })
 public class H2UserTest extends H2Test {
 
     @Autowired
@@ -50,8 +50,8 @@ public class H2UserTest extends H2Test {
 
     @BeforeClass
     public static void initDB() throws SQLException, IOException {
-        @SuppressWarnings("resource")
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:h2/spring-test-h2.xml");
+        @SuppressWarnings("resource") ApplicationContext context = new ClassPathXmlApplicationContext(
+                "classpath:h2/spring-test-h2.xml");
         DataSource ds = (DataSource) context.getBean("dataSource");
         try (Connection conn = ds.getConnection()) {
             String createTableSql = readFile("user.ddl.sql");
@@ -286,9 +286,9 @@ public class H2UserTest extends H2Test {
         updateUser.setVersion(1);
         Assert.assertTrue(userService.update(updateUser, null));
         EntityWrapper<H2User> ew = new EntityWrapper<>();
-        int count1 = userService.selectCount(ew);
+        long count1 = userService.selectCount(ew);
         ew.eq("name", "918").eq("version", 1);
-        int count2 = userService.selectCount(ew);
+        long count2 = userService.selectCount(ew);
         List<H2User> userList = userService.selectList(new EntityWrapper<H2User>());
         for (H2User u : userList) {
             System.out.println(u);
@@ -301,7 +301,7 @@ public class H2UserTest extends H2Test {
     @Test
     public void testUpdateBatch() {
         List<H2User> list = userService.selectList(new EntityWrapper<H2User>());
-        Map<Long, Integer> userVersionMap = new HashMap<>();
+        Map<Long,Integer> userVersionMap = new HashMap<>();
         for (H2User u : list) {
             userVersionMap.put(u.getId(), u.getVersion());
         }
@@ -317,8 +317,8 @@ public class H2UserTest extends H2Test {
     @Test
     public void testUpdateInLoop() {
         List<H2User> list = userService.selectList(new EntityWrapper<H2User>());
-        Map<Long, Integer> versionBefore = new HashMap<>();
-        Map<Long, String> nameExpect = new HashMap<>();
+        Map<Long,Integer> versionBefore = new HashMap<>();
+        Map<Long,String> nameExpect = new HashMap<>();
         for (H2User h2User : list) {
             Long id = h2User.getId();
             Integer versionVal = h2User.getVersion();
@@ -340,8 +340,8 @@ public class H2UserTest extends H2Test {
     @Test
     public void testUpdateAllColumnInLoop() {
         List<H2User> list = userService.selectList(new EntityWrapper<H2User>());
-        Map<Long, Integer> versionBefore = new HashMap<>();
-        Map<Long, String> nameExpect = new HashMap<>();
+        Map<Long,Integer> versionBefore = new HashMap<>();
+        Map<Long,String> nameExpect = new HashMap<>();
         for (H2User h2User : list) {
             Long id = h2User.getId();
             Integer versionVal = h2User.getVersion();
@@ -404,11 +404,10 @@ public class H2UserTest extends H2Test {
         Assert.assertEquals(1, user.getVersion().intValue());
     }
 
-
     @Test
     public void testCondition() {
         Page<H2User> page = new Page<>(1, 3);
-        Map<String, Object> condition = new HashMap<>();
+        Map<String,Object> condition = new HashMap<>();
         condition.put("test_type", 1);
         page.setCondition(condition);
         Page<H2User> pageResult = userService.selectPage(page);
@@ -418,7 +417,6 @@ public class H2UserTest extends H2Test {
         System.out.println(pageResult.getTotal());
 
     }
-
 
     @Test
     public void testEntityWrapperSelectSql() {
@@ -435,7 +433,7 @@ public class H2UserTest extends H2Test {
 
     @Test
     public void testQueryWithParamInSelectStatement() {
-        Map<String, Object> param = new HashMap<>();
+        Map<String,Object> param = new HashMap<>();
         String nameParam = "selectStmtParam";
         param.put("nameParam", nameParam);
         param.put("ageFrom", 1);
@@ -450,7 +448,7 @@ public class H2UserTest extends H2Test {
 
     @Test
     public void testQueryWithParamInSelectStatement4Page() {
-        Map<String, Object> param = new HashMap<>();
+        Map<String,Object> param = new HashMap<>();
         String nameParam = "selectStmtParam";
         param.put("nameParam", nameParam);
         param.put("ageFrom", 1);
@@ -466,7 +464,7 @@ public class H2UserTest extends H2Test {
 
     @Test
     public void testSelectCountWithParamInSelectItems() {
-        Map<String, Object> param = new HashMap<>();
+        Map<String,Object> param = new HashMap<>();
         String nameParam = "selectStmtParam";
         param.put("nameParam", nameParam);
         param.put("ageFrom", 1);
@@ -477,7 +475,7 @@ public class H2UserTest extends H2Test {
 
     @Test
     public void testPageWithDollarParamInSelectItems() {
-        Map<String, Object> param = new HashMap<>();
+        Map<String,Object> param = new HashMap<>();
         String nameParam = "selectStmtParam";
         param.put("nameParam", nameParam);
         param.put("ageFrom", 1);
@@ -491,7 +489,7 @@ public class H2UserTest extends H2Test {
     @Test
     public void testDistinctColumn() {
         EntityWrapper<H2User> ew = new EntityWrapper<>();
-        ew.setSqlSelect(Column.create().column("distinct test_type"));//setMapUnderscoreToCamelCase(true)
+        ew.setSqlSelect(Column.create().column("distinct test_type"));// setMapUnderscoreToCamelCase(true)
         List<H2User> list = userService.selectList(ew);
         for (H2User u : list) {
             System.out.println("getTestType=" + u.getTestType());

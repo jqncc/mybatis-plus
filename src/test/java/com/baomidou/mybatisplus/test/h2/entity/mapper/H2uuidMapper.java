@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.test.h2.entity.persistent.H2uuid;
  * @author hubin
  * @date 2017-06-28
  */
-public interface H2uuidMapper extends SuperMapper<H2uuid> {
+public interface H2uuidMapper extends SuperMapper<H2uuid,Long> {
 
 }

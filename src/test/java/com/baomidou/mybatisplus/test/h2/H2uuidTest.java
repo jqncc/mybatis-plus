@@ -29,7 +29,7 @@ import com.baomidou.mybatisplus.test.h2.entity.persistent.H2uuid;
  * @date 2017/4/1
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:h2/spring-test-h2.xml"})
+@ContextConfiguration(locations = { "classpath:h2/spring-test-h2.xml" })
 public class H2uuidTest extends H2Test {
 
     @Autowired
@@ -37,8 +37,8 @@ public class H2uuidTest extends H2Test {
 
     @BeforeClass
     public static void initDB() throws SQLException, IOException {
-        @SuppressWarnings("resource")
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:h2/spring-test-h2.xml");
+        @SuppressWarnings("resource") ApplicationContext context = new ClassPathXmlApplicationContext(
+                "classpath:h2/spring-test-h2.xml");
         DataSource ds = (DataSource) context.getBean("dataSource");
         try (Connection conn = ds.getConnection()) {
             Statement stmt = conn.createStatement();
@@ -51,7 +51,7 @@ public class H2uuidTest extends H2Test {
     @Test
     public void testUuid() {
         H2uuid h2uuid = new H2uuid("3");
-        Assert.assertEquals(1, uuidMapper.insert(h2uuid).intValue());
+        Assert.assertEquals(1, uuidMapper.insert(h2uuid));
         Assert.assertTrue(h2uuid.getId().length() == 32);
     }
 

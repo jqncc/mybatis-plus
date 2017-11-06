@@ -1,17 +1,14 @@
 /**
  * Copyright (c) 2011-2014, hubin (jobob@qq.com).
  * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package com.baomidou.mybatisplus.test.h2.service.impl;
 
@@ -36,7 +33,7 @@ import com.baomidou.mybatisplus.test.h2.service.IH2UserService;
  * @date 2017-01-30
  */
 @Service
-public class H2UserServiceImpl extends ServiceImpl<H2UserMapper, H2User> implements IH2UserService {
+public class H2UserServiceImpl extends ServiceImpl<H2UserMapper,H2User,Long> implements IH2UserService {
 
     @Autowired
     H2UserMapper userMapper;
@@ -68,19 +65,19 @@ public class H2UserServiceImpl extends ServiceImpl<H2UserMapper, H2User> impleme
     }
 
     @Override
-    public List<H2User> queryWithParamInSelectStatememt(Map<String, Object> param) {
+    public List<H2User> queryWithParamInSelectStatememt(Map<String,Object> param) {
         return userMapper.selectUserWithParamInSelectStatememt(param);
     }
 
     @Override
-    public Page<H2User> queryWithParamInSelectStatememt4Page(Map<String, Object> param, Page<H2User> page) {
+    public Page<H2User> queryWithParamInSelectStatememt4Page(Map<String,Object> param, Page<H2User> page) {
         page.setSearchCount(true);
         userMapper.selectUserWithParamInSelectStatememt4Page(param, page);
         return page;
     }
 
     @Override
-    public int selectCountWithParamInSelectItems(Map<String, Object> param) {
+    public int selectCountWithParamInSelectItems(Map<String,Object> param) {
         return userMapper.selectCountWithParamInSelectItems(param);
     }
 }

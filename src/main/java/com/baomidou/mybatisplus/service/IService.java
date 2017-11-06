@@ -1,17 +1,14 @@
 /**
  * Copyright (c) 2011-2016, hubin (jobob@qq.com).
  * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package com.baomidou.mybatisplus.service;
 
@@ -30,7 +27,7 @@ import com.baomidou.mybatisplus.plugins.Page;
  * @author hubin
  * @Date 2016-04-20
  */
-public interface IService<T> {
+public interface IService<T,PK extends Serializable> {
 
     /**
      * <p>
@@ -68,7 +65,7 @@ public interface IService<T> {
      * </p>
      *
      * @param entityList 实体对象列表
-     * @param batchSize  插入批次数量
+     * @param batchSize 插入批次数量
      * @return boolean
      */
     boolean insertBatch(List<T> entityList, int batchSize);
@@ -121,7 +118,7 @@ public interface IService<T> {
      * @param id 主键ID
      * @return boolean
      */
-    boolean deleteById(Serializable id);
+    boolean deleteById(PK id);
 
     /**
      * <p>
@@ -131,7 +128,7 @@ public interface IService<T> {
      * @param columnMap 表字段 map 对象
      * @return boolean
      */
-    boolean deleteByMap(Map<String, Object> columnMap);
+    boolean deleteByMap(Map<String,Object> columnMap);
 
     /**
      * <p>
@@ -151,7 +148,7 @@ public interface IService<T> {
      * @param idList 主键ID列表
      * @return boolean
      */
-    boolean deleteBatchIds(List<? extends Serializable> idList);
+    boolean deleteBatchIds(List<PK> idList);
 
     /**
      * <p>
@@ -178,7 +175,7 @@ public interface IService<T> {
      * 根据 whereEntity 条件，更新记录
      * </p>
      *
-     * @param entity  实体对象
+     * @param entity 实体对象
      * @param wrapper 实体包装类 {@link Wrapper}
      * @return boolean
      */
@@ -200,7 +197,7 @@ public interface IService<T> {
      * </p>
      *
      * @param entityList 实体对象列表
-     * @param batchSize  更新批次数量
+     * @param batchSize 更新批次数量
      * @return boolean
      */
     boolean updateBatchById(List<T> entityList, int batchSize);
@@ -221,7 +218,7 @@ public interface IService<T> {
      * </p>
      *
      * @param entityList 实体对象列表
-     * @param batchSize  更新批次数量
+     * @param batchSize 更新批次数量
      * @return boolean
      */
     boolean updateAllColumnBatchById(List<T> entityList, int batchSize);
@@ -252,7 +249,7 @@ public interface IService<T> {
      * @param id 主键ID
      * @return T
      */
-    T selectById(Serializable id);
+    T selectById(PK id);
 
     /**
      * <p>
@@ -262,7 +259,7 @@ public interface IService<T> {
      * @param idList 主键ID列表
      * @return List<T>
      */
-    List<T> selectBatchIds(List<? extends Serializable> idList);
+    List<T> selectBatchIds(List<PK> idList);
 
     /**
      * <p>
@@ -272,7 +269,7 @@ public interface IService<T> {
      * @param columnMap 表字段 map 对象
      * @return List<T>
      */
-    List<T> selectByMap(Map<String, Object> columnMap);
+    List<T> selectByMap(Map<String,Object> columnMap);
 
     /**
      * <p>
@@ -292,7 +289,7 @@ public interface IService<T> {
      * @param wrapper {@link Wrapper}
      * @return Map<String,Object>
      */
-    Map<String, Object> selectMap(Wrapper<T> wrapper);
+    Map<String,Object> selectMap(Wrapper<T> wrapper);
 
     /**
      * <p>
@@ -310,9 +307,9 @@ public interface IService<T> {
      * </p>
      *
      * @param wrapper 实体对象
-     * @return int
+     * @return long
      */
-    int selectCount(Wrapper<T> wrapper);
+    long selectCount(Wrapper<T> wrapper);
 
     /**
      * <p>
@@ -342,7 +339,7 @@ public interface IService<T> {
      * @param wrapper {@link Wrapper}
      * @return
      */
-    List<Map<String, Object>> selectMaps(Wrapper<T> wrapper);
+    List<Map<String,Object>> selectMaps(Wrapper<T> wrapper);
 
     /**
      * <p>
@@ -359,19 +356,19 @@ public interface IService<T> {
      * 翻页查询
      * </p>
      *
-     * @param page    翻页对象
+     * @param page 翻页对象
      * @param wrapper {@link Wrapper}
      * @return
      */
     @SuppressWarnings("rawtypes")
-    Page<Map<String, Object>> selectMapsPage(Page page, Wrapper<T> wrapper);
+    Page<Map<String,Object>> selectMapsPage(Page page, Wrapper<T> wrapper);
 
     /**
      * <p>
      * 翻页查询
      * </p>
      *
-     * @param page    翻页对象
+     * @param page 翻页对象
      * @param wrapper 实体包装类 {@link Wrapper}
      * @return
      */

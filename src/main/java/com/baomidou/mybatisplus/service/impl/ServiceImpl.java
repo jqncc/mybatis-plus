@@ -1,17 +1,14 @@
 /**
  * Copyright (c) 2011-2016, hubin (jobob@qq.com).
  * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package com.baomidou.mybatisplus.service.impl;
 
@@ -20,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.binding.MapperMethod;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,9 +44,7 @@ import com.baomidou.mybatisplus.toolkit.TableInfoHelper;
  * @author hubin
  * @Date 2016-04-20
  */
-public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
-
-    private static final Log logger = LogFactory.getLog(ServiceImpl.class);
+public class ServiceImpl<M extends BaseMapper<T,PK>,T,PK extends Serializable> implements IService<T,PK> {
 
     @Autowired
     protected M baseMapper;
@@ -158,7 +151,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
                 } else {
                     /*
                      * 更新成功直接返回，失败执行插入逻辑
-					 */
+                     */
                     return updateById(entity) || insert(entity);
                 }
             } else {
@@ -180,7 +173,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
                 } else {
                     /*
                      * 更新成功直接返回，失败执行插入逻辑
-					 */
+                     */
                     return updateAllColumnById(entity) || insertAllColumn(entity);
                 }
             } else {
@@ -214,8 +207,8 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
      * 批量插入修改
      *
      * @param entityList 实体对象列表
-     * @param batchSize  批量刷新个数
-     * @param selective  是否滤掉空字段
+     * @param batchSize 批量刷新个数
+     * @param selective 是否滤掉空字段
      * @return boolean
      */
     private boolean insertOrUpdateBatch(List<T> entityList, int batchSize, boolean selective) {
@@ -242,12 +235,12 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
     }
 
     @Transactional
-    public boolean deleteById(Serializable id) {
+    public boolean deleteById(PK id) {
         return retBool(baseMapper.deleteById(id));
     }
 
     @Transactional
-    public boolean deleteByMap(Map<String, Object> columnMap) {
+    public boolean deleteByMap(Map<String,Object> columnMap) {
         if (MapUtils.isEmpty(columnMap)) {
             throw new MybatisPlusException("deleteByMap columnMap is empty.");
         }
@@ -260,7 +253,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
     }
 
     @Transactional
-    public boolean deleteBatchIds(List<? extends Serializable> idList) {
+    public boolean deleteBatchIds(List<PK> idList) {
         return retBool(baseMapper.deleteBatchIds(idList));
     }
 
@@ -303,8 +296,8 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
      * 根据主键ID进行批量修改
      *
      * @param entityList 实体对象列表
-     * @param batchSize  批量刷新个数
-     * @param selective  是否滤掉空字段
+     * @param batchSize 批量刷新个数
+     * @param selective 是否滤掉空字段
      * @return boolean
      */
     private boolean updateBatchById(List<T> entityList, int batchSize, boolean selective) {
@@ -330,15 +323,15 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
         return true;
     }
 
-    public T selectById(Serializable id) {
+    public T selectById(PK id) {
         return baseMapper.selectById(id);
     }
 
-    public List<T> selectBatchIds(List<? extends Serializable> idList) {
+    public List<T> selectBatchIds(List<PK> idList) {
         return baseMapper.selectBatchIds(idList);
     }
 
-    public List<T> selectByMap(Map<String, Object> columnMap) {
+    public List<T> selectByMap(Map<String,Object> columnMap) {
         return baseMapper.selectByMap(columnMap);
     }
 
@@ -346,7 +339,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
         return SqlHelper.getObject(baseMapper.selectList(wrapper));
     }
 
-    public Map<String, Object> selectMap(Wrapper<T> wrapper) {
+    public Map<String,Object> selectMap(Wrapper<T> wrapper) {
         return SqlHelper.getObject(baseMapper.selectMaps(wrapper));
     }
 
@@ -354,8 +347,8 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
         return SqlHelper.getObject(baseMapper.selectObjs(wrapper));
     }
 
-    public int selectCount(Wrapper<T> wrapper) {
-        return SqlHelper.retCount(baseMapper.selectCount(wrapper));
+    public long selectCount(Wrapper<T> wrapper) {
+        return baseMapper.selectCount(wrapper);
     }
 
     public List<T> selectList(Wrapper<T> wrapper) {
@@ -367,7 +360,7 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
         return selectPage(page, Condition.EMPTY);
     }
 
-    public List<Map<String, Object>> selectMaps(Wrapper<T> wrapper) {
+    public List<Map<String,Object>> selectMaps(Wrapper<T> wrapper) {
         return baseMapper.selectMaps(wrapper);
     }
 
@@ -375,8 +368,8 @@ public class ServiceImpl<M extends BaseMapper<T>, T> implements IService<T> {
         return baseMapper.selectObjs(wrapper);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public Page<Map<String, Object>> selectMapsPage(Page page, Wrapper<T> wrapper) {
+    @SuppressWarnings({ "rawtypes","unchecked" })
+    public Page<Map<String,Object>> selectMapsPage(Page page, Wrapper<T> wrapper) {
         SqlHelper.fillWrapper(page, wrapper);
         page.setRecords(baseMapper.selectMapsPage(page, wrapper));
         return page;

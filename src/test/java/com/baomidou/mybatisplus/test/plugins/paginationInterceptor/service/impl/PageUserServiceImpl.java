@@ -1,5 +1,7 @@
 package com.baomidou.mybatisplus.test.plugins.paginationInterceptor.service.impl;
 
+import java.io.Serializable;
+
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -8,6 +10,6 @@ import com.baomidou.mybatisplus.test.plugins.paginationInterceptor.mapper.PageUs
 import com.baomidou.mybatisplus.test.plugins.paginationInterceptor.service.PageUserService;
 
 @Service
-public class PageUserServiceImpl extends ServiceImpl<PageUserMapper, PageUser> implements PageUserService {
+public class PageUserServiceImpl extends ServiceImpl<PageUserMapper,PageUser,Serializable> implements PageUserService {
 
 }

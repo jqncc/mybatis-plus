@@ -1,21 +1,17 @@
 /**
  * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package com.baomidou.mybatisplus.mapper;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +29,7 @@ import org.apache.ibatis.session.RowBounds;
  * @author hubin
  * @Date 2016-01-23
  */
-public interface BaseMapper<T> {
+public interface BaseMapper<T,PK> {
 
     /**
      * <p>
@@ -43,7 +39,7 @@ public interface BaseMapper<T> {
      * @param entity 实体对象
      * @return int
      */
-    Integer insert(T entity);
+    int insert(T entity);
 
     /**
      * <p>
@@ -53,7 +49,7 @@ public interface BaseMapper<T> {
      * @param entity 实体对象
      * @return int
      */
-    Integer insertAllColumn(T entity);
+    int insertAllColumn(T entity);
 
     /**
      * <p>
@@ -63,7 +59,7 @@ public interface BaseMapper<T> {
      * @param id 主键ID
      * @return int
      */
-    Integer deleteById(Serializable id);
+    int deleteById(PK id);
 
     /**
      * <p>
@@ -73,7 +69,7 @@ public interface BaseMapper<T> {
      * @param columnMap 表字段 map 对象
      * @return int
      */
-    Integer deleteByMap(@Param("cm") Map<String, Object> columnMap);
+    int deleteByMap(@Param("cm") Map<String,Object> columnMap);
 
     /**
      * <p>
@@ -83,7 +79,7 @@ public interface BaseMapper<T> {
      * @param wrapper 实体对象封装操作类（可以为 null）
      * @return int
      */
-    Integer delete(@Param("ew") Wrapper<T> wrapper);
+    int delete(@Param("ew") Wrapper<T> wrapper);
 
     /**
      * <p>
@@ -93,7 +89,7 @@ public interface BaseMapper<T> {
      * @param idList 主键ID列表
      * @return int
      */
-    Integer deleteBatchIds(List<? extends Serializable> idList);
+    int deleteBatchIds(List<PK> idList);
 
     /**
      * <p>
@@ -103,7 +99,7 @@ public interface BaseMapper<T> {
      * @param entity 实体对象
      * @return int
      */
-    Integer updateById(@Param("et") T entity);
+    int updateById(@Param("et") T entity);
 
     /**
      * <p>
@@ -113,18 +109,29 @@ public interface BaseMapper<T> {
      * @param entity 实体对象
      * @return int
      */
-    Integer updateAllColumnById(@Param("et") T entity);
+    int updateAllColumnById(@Param("et") T entity);
 
     /**
      * <p>
      * 根据 whereEntity 条件，更新记录
      * </p>
      *
-     * @param entity  实体对象
+     * @param entity 实体对象
      * @param wrapper 实体对象封装操作类（可以为 null）
      * @return
      */
-    Integer update(@Param("et") T entity, @Param("ew") Wrapper<T> wrapper);
+    int update(@Param("et") T entity, @Param("ew") Wrapper<T> wrapper);
+
+    /**
+     * 修改指定列的值
+     * 
+     * @param entity 实体对象
+     * @param wrapper 条件
+     * @return
+     */
+    int updateColumns(@Param("et") T entity, @Param("ew") Wrapper<T> wrapper);
+
+    int updateColumnById(@Param("col") String column, @Param("val") Object value, @Param("id") PK id);
 
     /**
      * <p>
@@ -134,7 +141,7 @@ public interface BaseMapper<T> {
      * @param id 主键ID
      * @return T
      */
-    T selectById(Serializable id);
+    T selectById(PK id);
 
     /**
      * <p>
@@ -144,7 +151,7 @@ public interface BaseMapper<T> {
      * @param idList 主键ID列表
      * @return List<T>
      */
-    List<T> selectBatchIds(List<? extends Serializable> idList);
+    List<T> selectBatchIds(List<PK> idList);
 
     /**
      * <p>
@@ -154,7 +161,7 @@ public interface BaseMapper<T> {
      * @param columnMap 表字段 map 对象
      * @return List<T>
      */
-    List<T> selectByMap(@Param("cm") Map<String, Object> columnMap);
+    List<T> selectByMap(@Param("cm") Map<String,Object> columnMap);
 
     /**
      * <p>
@@ -174,7 +181,7 @@ public interface BaseMapper<T> {
      * @param wrapper 实体对象
      * @return int
      */
-    Integer selectCount(@Param("ew") Wrapper<T> wrapper);
+    long selectCount(@Param("ew") Wrapper<T> wrapper);
 
     /**
      * <p>
@@ -194,7 +201,7 @@ public interface BaseMapper<T> {
      * @param wrapper 实体对象封装操作类（可以为 null）
      * @return List<T>
      */
-    List<Map<String, Object>> selectMaps(@Param("ew") Wrapper<T> wrapper);
+    List<Map<String,Object>> selectMaps(@Param("ew") Wrapper<T> wrapper);
 
     /**
      * <p>
@@ -212,7 +219,7 @@ public interface BaseMapper<T> {
      * </p>
      *
      * @param rowBounds 分页查询条件（可以为 RowBounds.DEFAULT）
-     * @param wrapper   实体对象封装操作类（可以为 null）
+     * @param wrapper 实体对象封装操作类（可以为 null）
      * @return List<T>
      */
     List<T> selectPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
@@ -223,9 +230,9 @@ public interface BaseMapper<T> {
      * </p>
      *
      * @param rowBounds 分页查询条件（可以为 RowBounds.DEFAULT）
-     * @param wrapper   实体对象封装操作类
+     * @param wrapper 实体对象封装操作类
      * @return List<Map<String, Object>>
      */
-    List<Map<String, Object>> selectMapsPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
+    List<Map<String,Object>> selectMapsPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
 
 }

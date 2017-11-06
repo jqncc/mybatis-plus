@@ -1,17 +1,14 @@
 /**
  * Copyright (c) 2011-2020, hubin (jobob@qq.com).
  * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
  * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package com.baomidou.mybatisplus.spring;
 
@@ -44,7 +41,6 @@ import org.springframework.util.ResourceUtils;
 
 import com.baomidou.mybatisplus.entity.GlobalConfiguration;
 import com.baomidou.mybatisplus.toolkit.GlobalConfigUtils;
-import com.baomidou.mybatisplus.toolkit.SystemClock;
 
 /**
  * <p>
@@ -62,7 +58,7 @@ public class MybatisMapperRefresh implements Runnable {
     /**
      * 记录jar包存在的mapper
      */
-    private static final Map<String, List<Resource>> jarMapper = new HashMap<>();
+    private static final Map<String,List<Resource>> jarMapper = new HashMap<>();
     private SqlSessionFactory sqlSessionFactory;
     @Deprecated
     private Resource[] mapperLocations;
@@ -86,7 +82,8 @@ public class MybatisMapperRefresh implements Runnable {
     private int sleepSeconds = 20;
 
     /**
-     * see  com.baomidou.mybatisplus.spring.MybatisMapperRefresh#MybatisMapperRefresh(org.apache.ibatis.session.SqlSessionFactory, int, int, boolean)
+     * see com.baomidou.mybatisplus.spring.MybatisMapperRefresh#MybatisMapperRefresh(org.apache.ibatis.session.
+     * SqlSessionFactory, int, int, boolean)
      *
      * @param mapperLocations
      * @param sqlSessionFactory
@@ -95,7 +92,7 @@ public class MybatisMapperRefresh implements Runnable {
      * @param enabled
      */
     public MybatisMapperRefresh(Resource[] mapperLocations, SqlSessionFactory sqlSessionFactory, int delaySeconds,
-                                int sleepSeconds, boolean enabled) {
+            int sleepSeconds, boolean enabled) {
         this.mapperLocations = mapperLocations.clone();
         this.sqlSessionFactory = sqlSessionFactory;
         this.delaySeconds = delaySeconds;
@@ -106,7 +103,8 @@ public class MybatisMapperRefresh implements Runnable {
     }
 
     /**
-     * see com.baomidou.mybatisplus.spring.MybatisMapperRefresh#MybatisMapperRefresh(org.apache.ibatis.session.SqlSessionFactory, boolean)
+     * see com.baomidou.mybatisplus.spring.MybatisMapperRefresh#MybatisMapperRefresh(org.apache.ibatis.session.
+     * SqlSessionFactory, boolean)
      *
      * @param mapperLocations
      * @param sqlSessionFactory
@@ -128,7 +126,8 @@ public class MybatisMapperRefresh implements Runnable {
         this.run();
     }
 
-    public MybatisMapperRefresh(SqlSessionFactory sqlSessionFactory, int delaySeconds, int sleepSeconds, boolean enabled) throws Exception {
+    public MybatisMapperRefresh(SqlSessionFactory sqlSessionFactory, int delaySeconds, int sleepSeconds,
+            boolean enabled) throws Exception {
         this.sqlSessionFactory = sqlSessionFactory;
         this.delaySeconds = delaySeconds;
         this.sleepSeconds = sleepSeconds;
@@ -141,9 +140,9 @@ public class MybatisMapperRefresh implements Runnable {
         final GlobalConfiguration globalConfig = GlobalConfigUtils.getGlobalConfig(configuration);
         /*
          * 启动 XML 热加载
-		 */
+         */
         if (enabled) {
-            beforeTime = SystemClock.now();
+            beforeTime = System.currentTimeMillis();
             final MybatisMapperRefresh runnable = this;
             new Thread(new Runnable() {
 
@@ -154,8 +153,9 @@ public class MybatisMapperRefresh implements Runnable {
                             for (Resource mapperLocation : mapperLocations) {
                                 try {
                                     if (ResourceUtils.isJarURL(mapperLocation.getURL())) {
-                                        String key = new UrlResource(ResourceUtils.extractJarFileURL(mapperLocation.getURL()))
-                                                .getFile().getPath();
+                                        String key = new UrlResource(
+                                                ResourceUtils.extractJarFileURL(mapperLocation.getURL())).getFile()
+                                                        .getPath();
                                         fileSet.add(key);
                                         if (jarMapper.get(key) != null) {
                                             jarMapper.get(key).add(mapperLocation);
@@ -195,7 +195,7 @@ public class MybatisMapperRefresh implements Runnable {
                                 }
                             }
                             if (globalConfig.isRefresh()) {
-                                beforeTime = SystemClock.now();
+                                beforeTime = System.currentTimeMillis();
                             }
                             globalConfig.setRefresh(true);
                         } catch (Exception exception) {
@@ -219,11 +219,13 @@ public class MybatisMapperRefresh implements Runnable {
      * @throws Exception
      */
     @SuppressWarnings("rawtypes")
-    private void refresh(Resource resource) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+    private void refresh(Resource resource)
+            throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         this.configuration = sqlSessionFactory.getConfiguration();
         boolean isSupper = configuration.getClass().getSuperclass() == Configuration.class;
         try {
-            Field loadedResourcesField = isSupper ? configuration.getClass().getSuperclass().getDeclaredField("loadedResources")
+            Field loadedResourcesField = isSupper
+                    ? configuration.getClass().getSuperclass().getDeclaredField("loadedResources")
                     : configuration.getClass().getDeclaredField("loadedResources");
             loadedResourcesField.setAccessible(true);
             Set loadedResourcesSet = ((Set) loadedResourcesField.get(configuration));
@@ -286,10 +288,10 @@ public class MybatisMapperRefresh implements Runnable {
             if ("association".equals(resultChild.getName()) || "collection".equals(resultChild.getName())
                     || "case".equals(resultChild.getName())) {
                 if (resultChild.getStringAttribute("select") == null) {
-                    configuration.getResultMapNames().remove(
-                            resultChild.getStringAttribute("id", resultChild.getValueBasedIdentifier()));
-                    configuration.getResultMapNames().remove(
-                            namespace + "." + resultChild.getStringAttribute("id", resultChild.getValueBasedIdentifier()));
+                    configuration.getResultMapNames()
+                            .remove(resultChild.getStringAttribute("id", resultChild.getValueBasedIdentifier()));
+                    configuration.getResultMapNames().remove(namespace + "."
+                            + resultChild.getStringAttribute("id", resultChild.getValueBasedIdentifier()));
                     if (resultChild.getChildren() != null && !resultChild.getChildren().isEmpty()) {
                         clearResultMap(resultChild, namespace);
                     }
